@@ -1,10 +1,10 @@
 # ReelMatch
 
-ReelMatch is a local movie-night web app built for groups of three. Each viewer enters their name, favorite genres, and preferred maximum runtime. The app compares those preferences against a built-in movie catalog and ranks the best matches for the whole group.
+ReelMatch is a local movie-night web app built for groups of two to five. Each viewer enters their name, favorite genres, and preferred maximum runtime. The app compares those preferences against a built-in movie catalog and ranks the best matches for the whole group.
 
 ## Features
 
-- Three editable viewer profiles
+- Two to five editable viewer profiles
 - Genre and runtime preferences
 - Group movie recommendations with individual match scores
 - Runtime filtering
@@ -17,9 +17,9 @@ ReelMatch is a local movie-night web app built for groups of three. Each viewer 
 
 ## How recommendations work
 
-Each viewer receives a score for every movie based on how many of that movie's genres match their selected genres. ReelMatch averages the three viewer scores to produce the group match score.
+Each viewer receives a score for every movie based on how many of that movie's genres match their selected genres. ReelMatch averages all viewer scores to produce the group match score.
 
-Movies that meet all three runtime limits appear first. The Discover page shows why each movie matched by displaying the group score and each viewer's score. ReelMatch uses a transparent, rule-based recommendation system rather than an external AI service.
+Movies that meet everyone’s runtime limits appear first. The Discover page shows why each movie matched by displaying the group score and each viewer's score. ReelMatch uses a transparent, rule-based recommendation system rather than an external AI service.
 
 ## Running the app
 
