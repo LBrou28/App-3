@@ -1,0 +1,25 @@
+# Flutter and Dart
+.dart_tool/
+.packages
+.pub/
+build/
+coverage/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Android Studio and IntelliJ
+.idea/
+*.iml
+
+# Android local configuration and signing
+android/local.properties
+android/key.properties
+*.jks
+*.keystore
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Share archive
+ReelMatch-Flutter.zip
