@@ -116,5 +116,5 @@ class ReelScope extends InheritedWidget {
   static AppState of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<ReelScope>()!.state;
   @override
-  bool updateShouldNotify(ReelScope oldWidget) => oldWidget.state != state;
+  bool updateShouldNotify(ReelScope oldWidget) => true;
 }

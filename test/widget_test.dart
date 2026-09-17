@@ -12,4 +12,19 @@ void main() {
     expect(find.text('Vote'), findsOneWidget);
     expect(find.text('Meet the movie crew'), findsOneWidget);
   });
+
+  testWidgets('adds a discovered movie to the vote', (tester) async {
+    SharedPreferences.setMockInitialValues({});
+    await tester.pumpWidget(const ReelMatchApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Discover'));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text('Add to the vote').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add to the vote').first);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Shortlisted · Remove'), findsOneWidget);
+  });
 }
