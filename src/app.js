@@ -1,3 +1,0 @@
-function render(){ReelPreferences.render();ReelDiscover.render();ReelVoting.render();}
-document.querySelectorAll('[data-tab]').forEach(button=>button.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(b=>{b.classList.toggle('active',b===button);b.setAttribute('aria-pressed',String(b===button));});document.querySelectorAll('.panel').forEach(p=>p.hidden=p.id!==button.dataset.tab);});
-document.addEventListener('reel:change',render);render();
