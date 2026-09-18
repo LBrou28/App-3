@@ -110,11 +110,10 @@ class AppState extends ChangeNotifier {
   }
 }
 
-class ReelScope extends InheritedWidget {
-  const ReelScope({required this.state, required super.child, super.key});
-  final AppState state;
+class ReelScope extends InheritedNotifier<AppState> {
+  const ReelScope({required AppState state, required super.child, super.key})
+    : super(notifier: state);
+
   static AppState of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<ReelScope>()!.state;
-  @override
-  bool updateShouldNotify(ReelScope oldWidget) => true;
+      context.dependOnInheritedWidgetOfExactType<ReelScope>()!.notifier!;
 }

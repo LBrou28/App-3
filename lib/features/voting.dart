@@ -63,6 +63,8 @@ class VotingScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(14),
                 child: DropdownButtonFormField<String?>(
+                  key: ValueKey('vote-$index-${state.votes[index]}'),
+                  isExpanded: true,
                   initialValue: state.votes[index],
                   decoration: InputDecoration(
                     labelText: '${state.viewers[index].name}’s pick',

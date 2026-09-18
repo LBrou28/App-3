@@ -23,3 +23,6 @@ Thumbs.db
 
 # Share archive
 ReelMatch-Flutter.zip
+
+# Generated Gradle caches
+**/.gradle/
