@@ -99,6 +99,20 @@ class AppState extends ChangeNotifier {
     save();
   }
 
+  /// Resets every ballot to "not voted" while keeping the shortlist.
+  void clearVotes() {
+    votes = List<String?>.filled(viewers.length, null, growable: true);
+    notifyListeners();
+    save();
+  }
+
+  /// Clears the shortlist and every vote so the group can start again.
+  /// Viewer profiles are kept.
+  void startNewNight() {
+    shortlist.clear();
+    clearVotes();
+  }
+
   Movie? movieById(String id) {
     for (final movie in movies) {
       if (movie.id == id) return movie;
@@ -133,6 +147,21 @@ class AppState extends ChangeNotifier {
       return score != 0 ? score : a.movie.title.compareTo(b.movie.title);
     });
     return result;
+  }
+
+  /// Ranked movies whose title, release year, or any genre contains [query].
+  /// Matching ignores case and surrounding whitespace. An empty query returns
+  /// the full ranking unchanged.
+  List<MovieMatch> searchMovies(String query) {
+    final needle = query.trim().toLowerCase();
+    final ranked = rankedMovies();
+    if (needle.isEmpty) return ranked;
+    return ranked.where((match) {
+      final movie = match.movie;
+      return movie.title.toLowerCase().contains(needle) ||
+          movie.year.toString().contains(needle) ||
+          movie.genres.any((genre) => genre.toLowerCase().contains(needle));
+    }).toList();
   }
 }
 

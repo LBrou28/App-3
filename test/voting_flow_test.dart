@@ -10,6 +10,11 @@ void main() {
     'shortlisting makes movies available to every voter and removal clears votes',
     (tester) async {
       SharedPreferences.setMockInitialValues({});
+      // Use a tall viewport so every ballot stays on stage while scrolling.
+      tester.view.physicalSize = const Size(1200, 2400);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
       await tester.pumpWidget(const ReelMatchApp());
       await tester.pumpAndSettle();
       await tester.tap(find.text('Discover'));

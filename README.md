@@ -7,8 +7,10 @@ ReelMatch is a Flutter movie-night app for groups of two to five. Each viewer ch
 - Two to five editable viewer profiles
 - Explainable group and individual match scores
 - Runtime filtering
+- Catalog search by title, genre, or release year
 - Shared movie shortlist
 - Group voting with live results
+- One-tap reset: clear votes only, or start a new night that also clears the shortlist
 - Local Android device persistence
 - Responsive Material 3 interface
 
@@ -41,8 +43,8 @@ flutter test
 ## Project structure
 
 - `lib/features/preferences.dart`: viewer profiles, genres, and runtime limits
-- `lib/features/discover.dart`: ranked recommendations and shortlist
-- `lib/features/voting.dart`: ballots and live results
+- `lib/features/discover.dart`: ranked recommendations, search, and shortlist
+- `lib/features/voting.dart`: ballots, live results, and reset controls
 - `lib/app_state.dart`: shared state and device persistence
 - `lib/catalog.dart`: built-in movie catalog
 

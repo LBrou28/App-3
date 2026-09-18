@@ -7,6 +7,34 @@ import 'preferences.dart';
 class VotingScreen extends StatelessWidget {
   const VotingScreen({super.key});
 
+  Future<void> _confirmNewNight(BuildContext context, AppState state) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Start a new movie night?'),
+        content: const Text(
+          'This removes every shortlisted movie and clears all votes. '
+          'Viewer tastes are kept.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(dialogContext, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(dialogContext, true),
+            child: const Text('Start fresh'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return;
+    state.startNewNight();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Ready for a new movie night.')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ReelScope.of(context);
@@ -134,6 +162,30 @@ class VotingScreen extends StatelessWidget {
                   ),
                 ],
               ),
+            ),
+          ),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              OutlinedButton.icon(
+                onPressed: cast == 0 ? null : state.clearVotes,
+                icon: const Icon(Icons.undo),
+                label: const Text('Clear votes'),
+              ),
+              OutlinedButton.icon(
+                onPressed: () => _confirmNewNight(context, state),
+                icon: const Icon(Icons.restart_alt),
+                label: const Text('Start a new night'),
+              ),
+            ],
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Text(
+              'Clear votes keeps the shortlist. Starting a new night clears the shortlist and all votes; viewer tastes are kept.',
+              style: TextStyle(color: Color(0xffa0afa4), height: 1.4),
             ),
           ),
         ],

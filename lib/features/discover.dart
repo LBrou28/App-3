@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_state.dart';
+import '../catalog.dart';
 import '../models.dart';
 import 'preferences.dart';
 
@@ -12,10 +13,22 @@ class DiscoverScreen extends StatefulWidget {
 
 class _DiscoverState extends State<DiscoverScreen> {
   bool all = false;
+  final query = TextEditingController();
+
+  @override
+  void dispose() {
+    query.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext c) {
     final s = ReelScope.of(c);
-    final items = s.rankedMovies().where((x) => all || x.fitsEveryone).toList();
+    final items = s
+        .searchMovies(query.text)
+        .where((x) => all || x.fitsEveryone)
+        .toList();
+    final searching = query.text.trim().isNotEmpty;
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
@@ -24,13 +37,51 @@ class _DiscoverState extends State<DiscoverScreen> {
           'Discover your matches',
           'Recommendations balance all viewers equally.',
         ),
+        TextField(
+          controller: query,
+          textInputAction: TextInputAction.search,
+          onChanged: (_) => setState(() {}),
+          decoration: InputDecoration(
+            labelText: 'Search movies',
+            hintText: 'Title, genre, or year',
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: query.text.isEmpty
+                ? null
+                : IconButton(
+                    tooltip: 'Clear search',
+                    icon: const Icon(Icons.close),
+                    onPressed: () => setState(query.clear),
+                  ),
+          ),
+        ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Show movies over runtime limits'),
           value: all,
           onChanged: (v) => setState(() => all = v),
         ),
-        ...items.map((m) => MovieCard(match: m)),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: Text(
+            '${items.length} of ${movies.length} movies',
+            style: const TextStyle(color: Color(0xffa0afa4)),
+          ),
+        ),
+        if (items.isEmpty)
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Text(
+                searching
+                    ? 'No movies match “${query.text.trim()}”.'
+                          '${all ? '' : ' Movies over a runtime limit are hidden; turn on the switch above to include them.'}'
+                    : 'No movies fit every runtime limit. Turn on the switch above to see them all.',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          )
+        else
+          ...items.map((m) => MovieCard(match: m)),
       ],
     );
   }
