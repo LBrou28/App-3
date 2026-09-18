@@ -29,8 +29,8 @@ class VotingScreen extends StatelessWidget {
     final String result;
     if (cast == 0) {
       result = 'The big decision awaits.';
-    } else if (cast < 3) {
-      result = '$cast of 3 votes are in.';
+    } else if (cast < state.viewers.length) {
+      result = '$cast of ${state.viewers.length} votes are in.';
     } else if (leaders.length == 1) {
       result = 'Tonight’s pick: ${leaders.first.title}';
     } else {
@@ -57,7 +57,7 @@ class VotingScreen extends StatelessWidget {
           )
         else ...[
           ...List.generate(
-            3,
+            state.viewers.length,
             (index) => Card(
               margin: const EdgeInsets.only(bottom: 10),
               child: Padding(
@@ -118,12 +118,15 @@ class VotingScreen extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(child: Text(movie.title)),
-                              Text('${counts[movie.id] ?? 0} / 3'),
+                              Text(
+                                '${counts[movie.id] ?? 0} / ${state.viewers.length}',
+                              ),
                             ],
                           ),
                           const SizedBox(height: 6),
                           LinearProgressIndicator(
-                            value: (counts[movie.id] ?? 0) / 3,
+                            value:
+                                (counts[movie.id] ?? 0) / state.viewers.length,
                           ),
                         ],
                       ),

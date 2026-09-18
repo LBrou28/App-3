@@ -1,20 +1,20 @@
 # ReelMatch
 
-ReelMatch is a Flutter movie-night app for groups of three. Each viewer chooses favorite genres and a maximum runtime. The app ranks a built-in movie catalog using all three preference profiles, lets the group shortlist candidates, and provides one vote per viewer with live winner and tie results.
+ReelMatch is a Flutter movie-night app for groups of two to five. Each viewer chooses favorite genres and a maximum runtime. The app ranks a built-in movie catalog using all viewer preference profiles, lets the group shortlist candidates, and provides one vote per viewer with live winner and tie results.
 
 ## Features
 
-- Three editable viewer profiles
+- Two to five editable viewer profiles
 - Explainable group and individual match scores
 - Runtime filtering
 - Shared movie shortlist
-- Three-person voting with live results
+- Group voting with live results
 - Local Android device persistence
 - Responsive Material 3 interface
 
 ## Recommendation method
 
-Each viewer's score is the percentage of a movie's genres that match their selected genres. ReelMatch averages the three viewer scores into the group score. Movies that meet every runtime limit rank first. This is a transparent rule-based recommender and does not require an external AI service.
+Each viewer's score is the percentage of a movie's genres that match their selected genres. ReelMatch averages all viewer scores into the group score. Movies that meet every runtime limit rank first. This is a transparent rule-based recommender and does not require an external AI service.
 
 ## Open in Android Studio
 

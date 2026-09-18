@@ -22,7 +22,7 @@ class _DiscoverState extends State<DiscoverScreen> {
         const Header(
           'YOUR CINEMATIC SWEET SPOT',
           'Discover your matches',
-          'Recommendations balance all three viewers equally.',
+          'Recommendations balance all viewers equally.',
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
@@ -101,7 +101,7 @@ class MovieCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 ...List.generate(
-                  3,
+                  s.viewers.length,
                   (i) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
