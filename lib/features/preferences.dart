@@ -13,11 +13,45 @@ class PreferencesScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       children: [
         const Header(
-          'THREE TASTES. ONE MOVIE.',
+          'YOUR TASTES. ONE MOVIE.',
           'Meet the movie crew',
           'Choose genres and a maximum runtime for each viewer.',
         ),
-        ...List.generate(3, (i) => ViewerCard(index: i, viewer: s.viewers[i])),
+        Text(
+          '${s.viewers.length} viewers',
+          style: Theme.of(c).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            OutlinedButton.icon(
+              onPressed: s.viewers.length > AppState.minViewers
+                  ? s.removeLastViewer
+                  : null,
+              icon: const Icon(Icons.person_remove),
+              label: const Text('Remove last viewer'),
+            ),
+            FilledButton.icon(
+              onPressed: s.viewers.length < AppState.maxViewers
+                  ? s.addViewer
+                  : null,
+              icon: const Icon(Icons.person_add),
+              label: const Text('Add viewer'),
+            ),
+          ],
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: Text(
+            'Choose 2–5 viewers. Removing the last viewer also removes their vote.',
+          ),
+        ),
+        ...List.generate(
+          s.viewers.length,
+          (i) => ViewerCard(key: ValueKey(i), index: i, viewer: s.viewers[i]),
+        ),
       ],
     );
   }
@@ -77,6 +111,16 @@ class _ViewerCardState extends State<ViewerCard> {
   }
 
   @override
+  void didUpdateWidget(covariant ViewerCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.viewer != widget.viewer) {
+      name.text = widget.viewer.name;
+      selected = {...widget.viewer.genres};
+      runtime = widget.viewer.maxMinutes;
+    }
+  }
+
+  @override
   void dispose() {
     name.dispose();
     super.dispose();
@@ -94,7 +138,7 @@ class _ViewerCardState extends State<ViewerCard> {
     }
     ReelScope.of(context).updateViewer(
       widget.index,
-      Viewer(name: value, genres: selected, maxMinutes: runtime),
+      Viewer(name: value, genres: {...selected}, maxMinutes: runtime),
     );
     FocusScope.of(context).unfocus();
     ScaffoldMessenger.of(context)

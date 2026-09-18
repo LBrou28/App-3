@@ -7,6 +7,8 @@ import 'catalog.dart';
 import 'models.dart';
 
 class AppState extends ChangeNotifier {
+  static const minViewers = 2;
+  static const maxViewers = 5;
   static const key = 'reelmatch_state_v1';
   List<Viewer> viewers = [
     Viewer(name: 'Alex', genres: {'Sci-Fi', 'Adventure'}, maxMinutes: 150),
@@ -23,14 +25,16 @@ class AppState extends ChangeNotifier {
         final people = (data['viewers'] as List)
             .map((x) => Viewer.fromJson(Map<String, dynamic>.from(x as Map)))
             .toList();
-        if (people.length == 3) viewers = people;
+        if (people.length < minViewers || people.length > maxViewers) return;
+        viewers = people;
+        votes = List<String?>.filled(viewers.length, null, growable: true);
         shortlist.addAll(
           (data['shortlist'] as List).cast<String>().where(
             (id) => movieById(id) != null,
           ),
         );
         final saved = (data['votes'] as List).map((x) => x as String?).toList();
-        if (saved.length == 3) {
+        if (saved.length == viewers.length) {
           votes = saved.map((x) => shortlist.contains(x) ? x : null).toList();
         }
       }
@@ -50,6 +54,28 @@ class AppState extends ChangeNotifier {
         }),
       );
     } catch (_) {}
+  }
+
+  void addViewer() {
+    if (viewers.length >= maxViewers) return;
+    viewers.add(
+      Viewer(
+        name: 'Viewer ${viewers.length + 1}',
+        genres: {'Comedy'},
+        maxMinutes: 150,
+      ),
+    );
+    votes.add(null);
+    notifyListeners();
+    save();
+  }
+
+  void removeLastViewer() {
+    if (viewers.length <= minViewers) return;
+    viewers.removeLast();
+    votes.removeLast();
+    notifyListeners();
+    save();
   }
 
   void updateViewer(int i, Viewer viewer) {
@@ -94,7 +120,7 @@ class AppState extends ChangeNotifier {
       return MovieMatch(
         movie: movie,
         scores: scores,
-        groupScore: (scores.reduce((a, b) => a + b) / 3).round(),
+        groupScore: (scores.reduce((a, b) => a + b) / viewers.length).round(),
         fitsEveryone: viewers.every(
           (viewer) => movie.minutes <= viewer.maxMinutes,
         ),
